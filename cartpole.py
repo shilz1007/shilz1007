@@ -42,6 +42,11 @@ ruleNo = 10
 
 #define the linearized dynamics of the system:
 # state matrix
+g= 54
+mp= 72
+lp = 15
+mk = 0.5
+mt =73
 a = g/(lp*(4.0/3 - mp/(mp+mk)))
 A = np.array([[0, 1, 0, 0],
               [0, 0, a, 0],
@@ -317,31 +322,6 @@ obs = env.reset()
 
 
 
-print("Test CartPole env")
-for i_episode in range(ruleNo):
-    env = CartPoleEnv()
-    observation = env.reset()
-
-# defien new network
-    seed(1)
-    network = initialize_network(2, 1, 2)
-    for layer in network:
-        print(layer)
-
-    #initialize_network()
-    #observation = env.CartPole()
-
-    #observation = env.render()
-    #observation = env.close()
-
-    for t in range(100):
-        env.render(Dimlist2)
-        print(observation)
-        action = env.action_space.sample()
-        observation, reward, done, info = env.step(action)
-        if done:
-            print("Episode finished after {} timesteps".format(t+1))
-            break
 
 print("Test controller")
 # get environment
