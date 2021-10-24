@@ -1,0 +1,130 @@
+import numpy as np
+import math
+def CA(*arguments):
+    size = 50
+    r = 1
+    timeLim = 25   
+    size = timeLim * 2 + 1   
+    #ruleNo = 90
+    ruleNo = int(rule) 
+    print(ruleNo)
+    binaryRule = format(ruleNo, '0' + str(np.power(2, (2 * r + 1))) + 'b')
+    rules = list(binaryRule)  # split
+    print(ruleNo, binaryRule)
+
+    inp1 = obs1
+    inp2 = obs2
+    inp3 = obs3
+    inp4 = obs4
+
+    def validate(neighbors):
+    
+        #:param neighbors: array of neighbor cell state values
+        #:return: next step cell state value
+       b = ''
+       for num in neighbors:
+           b += str(num)
+       index = np.power(2, (2 * r + 1)) - 1 - int(b, 2)
+       return int(rules[index])
+    def update(u):
+       #:param u: array of all cell state
+       #:return: array of next step all cell state
+       u_next = []
+       for num in range(size):
+           nbs = []
+           for i in range(num - r, num + r + 1):
+               nbs.append(u[i % size])            
+           u_next.append(validate(nbs))
+       return u_next
+    def Majority(W_New):
+       Zero_Add = 0
+       One_Add = 0
+       print(len(W_New))
+       for y in range(len(W_New)):
+           if W_New[y] == '0':
+              # print('this is zero')
+              # print(U[y])
+              Zero_Add = Zero_Add + 1
+           else:
+              # print('this is 1')
+              # print(U[y])
+              One_Add  = One_Add + 1
+           if Zero_Add > One_Add:
+              Action = 0
+           else:
+              Action = 1      
+
+       print('Zero_Add', Zero_Add)
+       print('One_Add' , One_Add)
+       print('Action', Action)
+       return Action   
+## Creating input to fill in the CA       
+    def Create_Input(inp1,inp2,inp3,inp4):
+        New_Arr = np.zeros(size ,dtype=int)
+
+        input1_whole = input1 * 100000000
+        input2_whole = input2 * 100000000
+        input3_whole = input3 * 100000000
+        input4_whole = input4 * 100000000
+        a_whole = math.trunc(input1_whole)
+        b_whole = math.trunc(input2_whole)
+        c_whole = math.trunc(input3_whole)
+        d_whole = math.trunc(input4_whole) 
+
+        ## convert to list
+        a_str = str(a_whole)
+        b_str = str(b_whole)
+        c_str = str(c_whole)
+        d_str = str(d_whole)
+
+        a_res =[int(X) for X in a_str]
+        b_res =[int(X) for X in b_str]
+        c_res =[int(X) for X in c_str]
+        d_res =[int(X) for X in d_str] 
+
+        L1_Arr = np.asarray(a_res, dtype=np.int)
+        L2_Arr = np.asarray(b_res, dtype=np.int)
+        L3_Arr = np.asarray(c_res, dtype=np.int)
+        L4_Arr = np.asarray(d_res, dtype=np.int)
+        L5 = np.array([0,0,0])
+
+        total_val = np.concatenate((L1_Arr,L5,L2_Arr,L5,L3_Arr,L5,L4_Arr),axis=None)
+
+        if len(total_val) < len(U):
+           for x in range(len(total_val)):
+              New_Arr[x : len(total_val) ] = total_val[x]
+      
+        print(New_Arr)
+        return New_Arr
+
+    U = np.zeros(size, dtype=np.int)
+    U_input = Create_Input(inp1,inp2,inp3,inp4)
+    print('value in U' ,U_input)
+    U = U_input
+ 
+    print('value in U' ,U)
+    print('Length of U', len(U))
+    
+    W = np.array([U])
+    print('w',W )
+    #W_New = np.array([U])
+    #W_Major = Majority(W_New)
+    for j in range(timeLim):
+        U = update(U)
+        #if j == 25:
+    #    print('length of U', len(U))
+    #    print('length of W', len(W))
+        W = np.vstack((W, U))
+    W_New = np.array([U])
+    W_Major = Majority(W_New)
+    print('Final W_New',W_New)
+
+rule = input() 
+
+obs1 = .10101010
+obs2 = .11111100
+obs3 = .11010101
+obs4 = .10111111
+
+CA(obs1,obs2,obs3,obs4,rule)  
+    
