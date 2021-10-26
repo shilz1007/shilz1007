@@ -6,6 +6,8 @@ def CA(*arguments):
     timeLim = 25   
     size = timeLim * 2 + 1   
     #ruleNo = 90
+
+    ## converting rule to binary
     ruleNo = int(rule) 
     print(ruleNo)
     binaryRule = format(ruleNo, '0' + str(np.power(2, (2 * r + 1))) + 'b')
@@ -17,6 +19,8 @@ def CA(*arguments):
     inp3 = obs3
     inp4 = obs4
 
+    ## validating neighbour
+
     def validate(neighbors):
     
         #:param neighbors: array of neighbor cell state values
@@ -26,6 +30,8 @@ def CA(*arguments):
            b += str(num)
        index = np.power(2, (2 * r + 1)) - 1 - int(b, 2)
        return int(rules[index])
+
+    ## Updating CA based on neighbours   
     def update(u):
        #:param u: array of all cell state
        #:return: array of next step all cell state
@@ -36,6 +42,8 @@ def CA(*arguments):
                nbs.append(u[i % size])            
            u_next.append(validate(nbs))
        return u_next
+
+  ## Implementing majority rule on the last timestep.     
     def Majority(W_New):
        Zero_Add = 0
        One_Add = 0
@@ -57,15 +65,16 @@ def CA(*arguments):
        print('Zero_Add', Zero_Add)
        print('One_Add' , One_Add)
        print('Action', Action)
-       return Action   
-## Creating input to fill in the CA       
+       return Action  
+
+## Creating input to fill in the time step 0 of the CA      
     def Create_Input(inp1,inp2,inp3,inp4):
         New_Arr = np.zeros(size ,dtype=int)
-
-        input1_whole = input1 * 100000000
-        input2_whole = input2 * 100000000
-        input3_whole = input3 * 100000000
-        input4_whole = input4 * 100000000
+        
+        input1_whole = inp1 * 100000000
+        input2_whole = inp2 * 100000000
+        input3_whole = inp3 * 100000000
+        input4_whole = inp4 * 100000000
         a_whole = math.trunc(input1_whole)
         b_whole = math.trunc(input2_whole)
         c_whole = math.trunc(input3_whole)
@@ -97,6 +106,7 @@ def CA(*arguments):
         print(New_Arr)
         return New_Arr
 
+
     U = np.zeros(size, dtype=np.int)
     U_input = Create_Input(inp1,inp2,inp3,inp4)
     print('value in U' ,U_input)
@@ -109,6 +119,8 @@ def CA(*arguments):
     print('w',W )
     #W_New = np.array([U])
     #W_Major = Majority(W_New)
+
+ ## Runnig the CA for 25 time steps   
     for j in range(timeLim):
         U = update(U)
         #if j == 25:
