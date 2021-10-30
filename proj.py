@@ -11,6 +11,7 @@
 # https://towardsdatascience.com/comparing-optimal-control-and-reinforcement-learning-using-the-cart-pole-swing-up-openai-gym-772636bc48f4
 
 
+
 # https://github.com/shilz1007/shilz1007/blob/main/float2bin.ipynb
 
 #Task:
@@ -26,6 +27,53 @@ import numpy as np
 import math
 import gym
 
+
+#
+
+# Function returns octal representation
+def float_bin(number, places = 3):
+
+	# split() seperates whole number and decimal
+	# part and stores it in two seperate variables
+	whole, dec = str(number).split(".")
+
+	# Convert both whole number and decimal
+	# part from string type to integer type
+	whole = int(whole)
+	dec = int (dec)
+
+	# Convert the whole number part to it's
+	# respective binary form and remove the
+	# "0b" from it.
+	res = bin(whole).lstrip("0b") + "."
+
+	# Iterate the number of times, we want
+	# the number of decimal places to be
+	for x in range(places):
+
+		# Multiply the decimal value by 2
+		# and seperate the whole number part
+		# and decimal part
+		whole, dec = str((decimal_converter(dec)) * 2).split(".")
+
+		# Convert the decimal part
+		# to integer again
+		dec = int(dec)
+
+		# Keep adding the integer parts
+		# receive to the result variable
+		res += whole
+
+	return res
+
+# Function converts the value passed as
+# parameter to it's decimal representation
+def decimal_converter(num):
+	while num > 1:
+		num /= 10
+	return num
+
+#
 
 def CA(*arguments):
     print("ok2")
@@ -171,10 +219,10 @@ for i_episode in range(20):
     print("ok1")
     # *******
     for number in range(3):
-        obs1 = observation[0]
-        obs2 = observation[1]
-        obs3 = observation[2]
-        obs4 = observation[3]
+        obs1 = float_bin(observation[0], 6)
+        obs2 = float_bin(observation[1], 6)
+        obs3 = float_bin(observation[2], 6)
+        obs4 = float_bin(observation[3], 6)
 
     for t in range(100):
         env.render()
@@ -185,10 +233,7 @@ for i_episode in range(20):
         if done:
             print("Episode finished after {} timesteps".format(t+1))
             break
+        CA(obs1, obs2, obs3, obs4, rule)
+
 env.close()
-#CA(obs1, obs2, obs3,obs4, rule)
-CA(np.float(obs1), np.float(obs2), np.float(obs3), np.float(obs4), rule)
-
-
-
 
